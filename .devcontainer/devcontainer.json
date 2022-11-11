@@ -3,6 +3,7 @@
     "features": {
     },
     "extensions": [
-        "GitHub.copilot"
+        "GitHub.copilot",
+        "vscodevim.vim"
     ]
   }
