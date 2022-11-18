@@ -5,26 +5,25 @@ on:
       - main
 jobs:
   build_vue:
-    defaults:
-      run:
-        working-directory: ./jugglebird
     runs-on: ubuntu-latest
     name: Build Vue
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        ref: 'gh-pages'
     - name: Build-Vue
+      working-directory: ./jugglebird
       run: |
         npm install
         npm run build
+        mv dist /tmp
+    - name: Checkout gh-pages branch
+      users: actions/checkout@v2
+      with:
+        ref: 'gh-pages'
     - name: Prepare file tree
       run: |
-        mv dist ../../
-        cd ..
         rm -rf *
-        mv ../dist/* .
+        mv /tmp/dist/* .
     - name: Commit files to gh-pages branch
       run: |
         git add -A
