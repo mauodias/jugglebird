@@ -13,14 +13,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        ref: 'gh-pages'
     - name: Build-Vue
       run: |
         npm install
         npm run build
-    - name: Switch to gh-pages branch
-      uses: actions/checkout@v2
-      with:
-        ref: 'gh-pages'
     - name: Prepare file tree
       run: |
         mv dist ../../
