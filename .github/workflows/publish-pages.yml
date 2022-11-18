@@ -5,16 +5,30 @@ on:
       - main
 jobs:
   build_vue:
+    defaults:
+      run:
+        working-directory: ./jugglebird
     runs-on: ubuntu-latest
     name: Build Vue
     steps:
-    - uses: actions/checkout@v2
-    - id: Build-Vue
-      uses: xRealNeon/VuePagesAction@1.0.1
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Build-Vue
+      run: |
+        npm install
+        npm run build
+    - name: Switch to gh-pages branch
+      uses: actions/checkout@v2
       with:
-        username: 'mauodias'
-        reponame: 'jugglebird'
-        token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
-        cname: 'jugglebird.mauricio.cc'
-        gitemail: ${{ github.event.pusher.email }}
-        gitname: ${{ github.event.pusher.name }}
+        ref: 'gh-pages'
+    - name: Prepare file tree
+      run: |
+        mv dist ../../
+        cd ..
+        rm -rf *
+        mv ../dist/* .
+    - name: Commit files to gh-pages branch
+      run: |
+        git add -A
+        git commit -m "Update gh-pages"
+        git push -u origin gh-pages
