@@ -17,7 +17,7 @@ jobs:
         npm run build
         mv dist /tmp
     - name: Checkout gh-pages branch
-      users: actions/checkout@v2
+      uses: actions/checkout@v2
       with:
         ref: 'gh-pages'
     - name: Prepare file tree
